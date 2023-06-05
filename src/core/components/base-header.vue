@@ -62,6 +62,15 @@ const accountMenu = [
     visible: () => auth.loggedIn,
   },
   {
+    label: "Buillding",
+    command: () => {
+      router.push("/billing");
+    },
+    icon: PrimeIcons.USER,
+    visible: () => auth.loggedIn,
+  },
+
+  {
     label: "Companies",
     command: () => {
       router.push("/companies/admin");
@@ -72,6 +81,14 @@ const accountMenu = [
   {
     label: "Options",
     icon: PrimeIcons.COG,
+    visible: () => auth.loggedIn,
+  },
+  {
+    label: "Suscription",
+    command: () => {
+      router.push("/payment");
+    },
+    icon: PrimeIcons.STAR,
     visible: () => auth.loggedIn,
   },
   {

@@ -62,6 +62,10 @@ onMounted(async () => {
       <div
         class="table-header flex flex-column md:flex-row md:justify-content-between">
         <h2 class="mb-2 md:m-0 p-as-md-center text-xl">Available job offers</h2>
+        <button
+          class="border-2 border-teal-300 p-2 rounded-md bg-teal-300 text-white">
+          Optimizar con IA
+        </button>
       </div>
     </template>
     <Column field="id" header="ID" :sortable="true" />

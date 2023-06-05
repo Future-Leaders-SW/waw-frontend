@@ -3,6 +3,8 @@
  *
  * @type {import("vue-router").RouteRecordRaw[]}
  */
+import payment from "../payment/pages/payment.componente.vue";
+import billing from "../billing/billing.componente.vue";
 export const routes = [
   {
     path: "/",
@@ -58,5 +60,15 @@ export const routes = [
     path: "/companies/admin",
     name: "Companies",
     component: () => import("@/employers/pages/companies-admin.component.vue"),
+  },
+  {
+    path: "/payment",
+    name: "payment ",
+    component: payment,
+  },
+  {
+    path: "/billing",
+    name: "billing ",
+    component: billing,
   },
 ];
