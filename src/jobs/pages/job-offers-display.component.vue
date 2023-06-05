@@ -24,7 +24,7 @@ const handleConfirmation = () => {
       toast.add({
         severity: "success",
         summary: "Confirmed",
-        detail: "You have succesfully applied for the job",
+        detail: "You have successfully applied for the job",
         life: 3000,
       });
     },

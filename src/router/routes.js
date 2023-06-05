@@ -71,4 +71,9 @@ export const routes = [
     name: "billing ",
     component: billing,
   },
+  {
+    path: "/plans",
+    name: "plans",
+    component: () => import("@/subscriptions/pages/subscriptions-plans.component.vue"),
+  },
 ];
