@@ -21,7 +21,6 @@ watchEffect(() => {
 const navigation = [
   { label: "Home", path: "/", icon: PrimeIcons.HOME },
   { label: "Jobs", path: "/jobs", icon: PrimeIcons.BRIEFCASE },
-  { label: "Chat", path: "/chat", icon: PrimeIcons.COMMENT },
   { label: "Notices", path: "/notifications", icon: PrimeIcons.BELL },
 ];
 
@@ -62,11 +61,11 @@ const accountMenu = [
     visible: () => auth.loggedIn,
   },
   {
-    label: "Buillding",
+    label: "Billing",
     command: () => {
       router.push("/billing");
     },
-    icon: PrimeIcons.USER,
+    icon: PrimeIcons.MONEY_BILL,
     visible: () => auth.loggedIn,
   },
 
@@ -106,7 +105,7 @@ const accountMenu = [
 <template>
   <header
     class="px-4 md:px-8 flex items-center h-20 justify-between sm:justify-start sm:space-x-8 bg-white">
-    <div class="flex items-center h-full space-x-8">
+    <div class="flex items-center h-full space-x-8 flex-grow">
       <RouterLink to="/">
         <h1 class="text-2xl font-bold">WAW</h1>
       </RouterLink>
@@ -129,6 +128,7 @@ const accountMenu = [
       </nav>
     </div>
     <div
+    v-if="auth.loggedIn"
       class="h-full w-full hidden sm:flex items-center border-x border-slate-200"
       @click="handleSearch">
       <i :class="PrimeIcons.SEARCH" class="ml-4 text-xl text-slate-400"></i>

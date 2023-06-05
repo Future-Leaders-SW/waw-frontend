@@ -63,13 +63,21 @@ onMounted(async () => {
         class="table-header flex flex-column md:flex-row md:justify-content-between">
         <h2 class="mb-2 md:m-0 p-as-md-center text-xl">Available job offers</h2>
         <button
-          class="border-2 border-teal-300 p-2 rounded-md bg-teal-300 text-white">
-          Optimizar con IA
+          class="ml-auto border-2 border-teal-300 p-2 rounded-md bg-teal-300 text-black">
+          🤖 Optimizar con IA
         </button>
       </div>
     </template>
-    <Column field="id" header="ID" :sortable="true" />
     <Column field="title" header="Title" :sortable="true" />
+    <Column
+        field="image"
+        header="Image"
+        header-class="w-40"
+        class="px-6 py-3 text-xs">
+        <template #body="{ data }">
+          <img :src="data.image" class="w-full" />
+        </template>
+      </Column>
     <Column field="description" header="Description" :sortable="true" />
     <Column field="salaryRange" header="Salary Range" :sortable="true" />
     <Column header="Action">
