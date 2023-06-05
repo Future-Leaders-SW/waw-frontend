@@ -59,4 +59,9 @@ export const routes = [
     name: "Companies",
     component: () => import("@/employers/pages/companies-admin.component.vue"),
   },
+  {
+    path: "/plans",
+    name: "plans",
+    component: () => import("@/subscriptions/pages/subscriptions-plans.component.vue"),
+  },
 ];
