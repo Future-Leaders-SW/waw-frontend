@@ -4,8 +4,8 @@ import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
 import ToggleButton from "primevue/togglebutton";
 import useVuelidate from "@vuelidate/core";
-import FileUpload from 'primevue/fileupload';
 import Button from "primevue/button";
+import Dropdown from 'primevue/dropdown';
 import { required, email, sameAs, helpers } from "@vuelidate/validators";
 import { PrimeIcons, ToastSeverity } from "primevue/api";
 import { reactive, computed, ref } from "vue";
@@ -23,6 +23,7 @@ const submitted = ref(false);
 let visibleDialog = ref(false);
 let cvFile = ref(null);
 const pdfUploaded = ref(false);
+const selectedCity = ref(null);
 const state = reactive({
   fullName: "",
   preferredName: "",
@@ -31,13 +32,20 @@ const state = reactive({
   confirmPassword: "",
   birthdate: new Date(),
   checked: false,
+  rol: "",
 });
+
+const roles = ref([
+  { name: 'Employer', code: 'ER' },
+  { name: 'Employee', code: 'EE' },
+]);
 
 const rules = computed(() => ({
   fullName: { required },
   preferredName: { required },
   email: { required, email },
   password: { required },
+  selectedCity: { required },
   confirmPassword: { sameAs: sameAs(state.password, "password") },
   birthdate: {
     required,
@@ -167,20 +175,6 @@ const handleButtonClick = async () => {
         </span>
       </div>
 
-      <div class="w-full">
-        <span class="p-float-label w-full">
-          <InputText id="signup_email" v-model="v$.email.$model" type="email" class="rounded w-full !bg-transparent"
-            :class="{ 'p-invalid': v$.email.$invalid && submitted }" aria-describedby="signup_email-error" />
-          <label for="signup_email" class="!bg-slate-100" :class="{ 'p-error': v$.email.$invalid && submitted }">
-            Email
-          </label>
-        </span>
-        <span v-if="v$.email.$error && submitted">
-          <span v-for="(error, index) of v$.email.$errors" id="signup_email-error" :key="index">
-            <small class="p-error">{{ error.$message }}</small>
-          </span>
-        </span>
-      </div>
 
       <div class="w-full">
         <span class="p-float-label w-full">
@@ -221,11 +215,21 @@ const handleButtonClick = async () => {
             input-class="rounded w-full !bg-transparent" class="w-full"
             :class="{ 'p-invalid': v$.birthdate.$invalid && submitted }" aria-describedby="signup_birthdate-error" />
           <label for="signup_birthdate" class="!bg-slate-100" :class="{ 'p-error': v$.birthdate.$invalid && submitted }">
-            Confirm Password
+            Select Bithday
           </label>
         </span>
         <span v-if="v$.birthdate.$error && submitted">
           <span v-for="(error, index) of v$.birthdate.$errors" id="signup_birthdate-error" :key="index">
+            <small class="p-error">{{ error.$message }}</small>
+          </span>
+        </span>
+      </div>
+
+      <div class="card flex justify-content-center">
+        <Dropdown v-model="v$.selectedCity.$model" :options="roles" optionLabel="name" placeholder="Select a rol"
+          class="w-full md:w-14rem" :class="{ 'p-invalid': v$.selectedCity.$invalid && submitted }" />
+        <span v-if="v$.selectedCity.$error && submitted">
+          <span v-for="(error, index) of v$.selectedCity.$errors" id="selectedCity-error" :key="index">
             <small class="p-error">{{ error.$message }}</small>
           </span>
         </span>
@@ -277,8 +281,10 @@ const handleButtonClick = async () => {
 </template>
 <style>
 .custom-input {
+  /* Estilos personalizados */
   border: 1px solid #ccc;
   padding: 8px;
+  /* Otros estilos que desees aplicar */
 }
 
 .custom-button {
@@ -304,9 +310,11 @@ const handleButtonClick = async () => {
 }
 
 .custom-button:disabled {
+  /* Estilos cuando el botón está desactivado */
   opacity: 0.6;
   background-color: #e0e0e0;
   cursor: not-allowed;
 }
 </style>
+
 
