@@ -8,8 +8,7 @@
     "build": "vite build",
     "preview": "vite preview --port 5050",
     "test": "concurrently -s -n test: 'npm:test:*'",
-    "test:unit": "vitest --environment jsdom --run",
-    "prepare": "husky install"
+    "test:unit": "vitest --environment jsdom --run"
   },
   "dependencies": {
     "@vuelidate/core": "^2.0.0-alpha.42",
