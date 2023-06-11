@@ -85,7 +85,7 @@ const accountMenu = [
   {
     label: "Suscription",
     command: () => {
-      router.push("/payment");
+      router.push("/plans");
     },
     icon: PrimeIcons.STAR,
     visible: () => auth.loggedIn,
@@ -128,7 +128,7 @@ const accountMenu = [
       </nav>
     </div>
     <div
-    v-if="auth.loggedIn"
+      v-if="auth.loggedIn"
       class="h-full w-full hidden sm:flex items-center border-x border-slate-200"
       @click="handleSearch">
       <i :class="PrimeIcons.SEARCH" class="ml-4 text-xl text-slate-400"></i>
