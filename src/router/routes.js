@@ -5,6 +5,7 @@
  */
 import payment from "../payment/pages/payment.componente.vue";
 import billing from "../billing/billing.componente.vue";
+import admin from "../admin/pages/dashboard-panel.component.vue";
 export const routes = [
   {
     path: "/",
@@ -70,6 +71,11 @@ export const routes = [
     path: "/billing",
     name: "billing ",
     component: billing,
+  },
+  {
+    path:"/admin",
+    name: "admin",
+    component: admin
   },
   {
     path: "/plans",
