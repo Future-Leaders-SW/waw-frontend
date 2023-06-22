@@ -21,9 +21,8 @@ const toastService = useToast();
 
 const submitted = ref(false);
 let visibleDialog = ref(false);
-let cvFile = ref(null);
 const pdfUploaded = ref(false);
-const selectedCity = ref(null);
+const selectedRol = ref(null);
 const state = reactive({
   fullName: "",
   preferredName: "",
@@ -36,8 +35,8 @@ const state = reactive({
 });
 
 const roles = ref([
-  { name: 'Employer', code: 'ER' },
-  { name: 'Employee', code: 'EE' },
+  { name: 'Recluter', code: 1 },
+  { name: 'Professional', code: 0 },
 ]);
 
 const rules = computed(() => ({
@@ -45,7 +44,7 @@ const rules = computed(() => ({
   preferredName: { required },
   email: { required, email },
   password: { required },
-  selectedCity: { required },
+  selectedRol: { required },
   confirmPassword: { sameAs: sameAs(state.password, "password") },
   birthdate: {
     required,
@@ -96,7 +95,6 @@ const handleButtonClick = async () => {
   // We don't need the checked state on the server
   delete user.confirmPassword;
   delete user.checked;
-
   const success = await auth.register(user);
   if (success) {
     router.push("/account/signin");
@@ -226,10 +224,10 @@ const handleButtonClick = async () => {
       </div>
 
       <div class="card flex justify-content-center">
-        <Dropdown v-model="v$.selectedCity.$model" :options="roles" optionLabel="name" placeholder="Select a rol"
-          class="w-full md:w-14rem" :class="{ 'p-invalid': v$.selectedCity.$invalid && submitted }" />
-        <span v-if="v$.selectedCity.$error && submitted">
-          <span v-for="(error, index) of v$.selectedCity.$errors" id="selectedCity-error" :key="index">
+        <Dropdown v-model="v$.selectedRol.$model" :options="roles" optionLabel="name" placeholder="Select a rol"
+          class="w-full md:w-14rem" :class="{ 'p-invalid': v$.selectedRol.$invalid && submitted }" />
+        <span v-if="v$.selectedRol.$error && submitted">
+          <span v-for="(error, index) of v$.selectedRol.$errors" id="selectedRol-error" :key="index">
             <small class="p-error">{{ error.$message }}</small>
           </span>
         </span>

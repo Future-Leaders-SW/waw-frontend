@@ -195,6 +195,7 @@ export class AuthService extends BaseService {
       "email",
       "password",
       "birthdate",
+      "rol"
     ];
 
     for (const field of required) {
