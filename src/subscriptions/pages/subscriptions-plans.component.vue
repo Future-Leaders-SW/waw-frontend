@@ -2,6 +2,32 @@
 import Card from "primevue/card";
 import Button from "primevue/button";
 import Toolbar from "primevue/toolbar";
+import {onMounted, ref} from "vue";
+
+import {useSubscriptionStore} from "@/stores/pagostores";
+const  useSubscription = useSubscriptionStore();
+
+const subscription = ref(0);
+
+const { add } = useSubscription;
+
+
+const lista = ref([
+  subscription,
+])
+
+const  planBasic=()=>{
+  subscription.value = 0;
+  console.log(subscription.value);
+  add.value=subscription.value;
+}
+
+const  planPro=()=>{
+  subscription.value = 1;
+  console.log(subscription.value);
+  add.value=subscription.value;
+}
+
 </script>
 
 <template>
@@ -78,6 +104,7 @@ import Toolbar from "primevue/toolbar";
       </template>
       <template #footer>
         <router-link
+          @click="add(0)"
           to="/payment"
           class="custom-button flex justify-center"
           type="button"
@@ -115,7 +142,8 @@ import Toolbar from "primevue/toolbar";
         <router-link
           to="/payment"
           class="custom-button flex justify-center"
-          type="button"
+          type="submit"
+          @click="add(1)"
           label="Upgrade"
           >Upgrade</router-link
         >

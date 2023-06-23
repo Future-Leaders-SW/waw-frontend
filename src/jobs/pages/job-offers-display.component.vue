@@ -3,6 +3,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 import { useJobs } from "../services/jobs.service";
+import { usePayment } from "@/payment/services/payment.service";
 import { ref, onMounted } from "vue";
 import { PrimeIcons } from "primevue/api";
 import ConfirmDialog from "primevue/confirmdialog";
@@ -42,7 +43,11 @@ const handleConfirmation = () => {
 
 onMounted(async () => {
   const response = await service.getAll();
+
   jobs.value = response.data;
+
+  console.log(response.data)
+
 });
 </script>
 
@@ -68,18 +73,33 @@ onMounted(async () => {
         </button>
       </div>
     </template>
-    <Column field="title" header="Title" :sortable="true" />
     <Column
-        field="image"
-        header="Image"
-        header-class="w-40"
-        class="px-6 py-3 text-xs">
-        <template #body="{ data }">
-          <img :src="data.image" class="w-full" />
-        </template>
-      </Column>
-    <Column field="description" header="Description" :sortable="true" />
-    <Column field="salaryRange" header="Salary Range" :sortable="true" />
+      field="id"
+      header="Id"
+      :sortable="true" />
+
+
+    <Column
+      field="title"
+      header="Title"
+      :sortable="true" />
+    <Column
+      field="image"
+      header="Image"
+      header-class="w-40"
+      class="px-6 py-3 text-xs">
+      <template #body="{ data }">
+        <img :src="data.image" class="w-full" />
+      </template>
+    </Column>
+    <Column
+      field="description"
+      header="Description"
+      :sortable="true" />
+    <Column
+      field="salaryRange"
+      header="Salary Range"
+      :sortable="true" />
     <Column header="Action">
       <template #body>
         <Button

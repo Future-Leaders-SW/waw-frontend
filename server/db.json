@@ -207,5 +207,17 @@
       "address": "Silicon Valley",
       "email": "oracle@support.com"
     }
+  ],
+  "subscription": [
+    {
+      "id":0,
+      "namePLan": 1,
+      "description": "Pro",
+      "duration": 30,
+      "cost": 25,
+      "item": "Perzonalized job offer recommendations based on your job",
+      "subscriptionType": 0
+    }
+
   ]
 }

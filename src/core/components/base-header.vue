@@ -66,7 +66,7 @@ const accountMenu = [
       router.push("/billing");
     },
     icon: PrimeIcons.MONEY_BILL,
-    visible: () => auth.loggedIn,
+    visible: () => !auth.loggedIn,
   },
 
   {
@@ -88,7 +88,7 @@ const accountMenu = [
       router.push("/plans");
     },
     icon: PrimeIcons.STAR,
-    visible: () => auth.loggedIn,
+    visible: () => !auth.loggedIn,
   },
   {
     label: "Sign Out",
