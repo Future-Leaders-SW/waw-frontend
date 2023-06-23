@@ -4,10 +4,11 @@ import Column from "primevue/column";
 import Button from "primevue/button";
 import { useJobs } from "../services/jobs.service";
 import { ref, onMounted } from "vue";
-import { PrimeIcons } from "primevue/api";
+import { FilterMatchMode, FilterOperator, PrimeIcons } from "primevue/api";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import InputText from "primevue/inputtext";
 
 const service = useJobs();
 const jobs = ref([]);
@@ -15,6 +16,14 @@ const jobs = ref([]);
 const confirm = useConfirm();
 const toast = useToast();
 
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  title: {
+    operator: FilterOperator.AND,
+    constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+  },
+  description: { value: null, matchMode: FilterMatchMode.CONTAINS },
+});
 const handleConfirmation = () => {
   confirm.require({
     header: "Confirmation",
@@ -39,6 +48,9 @@ const handleConfirmation = () => {
     },
   });
 };
+const formatCurrency = (value) => {
+  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+};
 
 onMounted(async () => {
   const response = await service.getAll();
@@ -49,6 +61,8 @@ onMounted(async () => {
 <template>
   <ConfirmDialog />
   <DataTable
+    v-model:filters="filters"
+    :global-filter-fields="['title','description']"
     :value="jobs"
     data-key="id"
     :paginator="true"
@@ -60,26 +74,50 @@ onMounted(async () => {
     class="rounded overflow-hidden">
     <template #header>
       <div
-        class="table-header flex flex-column md:flex-row md:justify-content-between">
-        <h2 class="mb-2 md:m-0 p-as-md-center text-xl">Available job offers</h2>
-        <button
-          class="ml-auto border-2 border-teal-300 p-2 rounded-md bg-teal-300 text-black">
-          🤖 Optimizar con IA
-        </button>
+        class="flex flex-col md:flex-row md:justify-between md:items-center">
+        <h2 class="mb-2 md:m-0 p-as-md-center text-xl">Available Job Offers</h2>
+        <div>
+          <span class="p-input-icon-left">
+            <i :class="PrimeIcons.SEARCH"></i>
+            <InputText
+              v-model="filters['global'].value"
+              class="rounded"
+              type="text"
+              placeholder="Search..." />
+          </span>
+          <button
+            class="ml-auto border-2 border-teal-300 p-2 rounded-md bg-teal-300 text-black ">
+            🤖 Optimizar con IA
+          </button>
+        </div>
+
       </div>
     </template>
+    <template #empty>No offers were found.</template>
+
+    <template #loading>Loading...</template>
+
     <Column field="title" header="Title" :sortable="true" />
     <Column
         field="image"
-        header="Image"
+        header=""
         header-class="w-40"
         class="px-6 py-3 text-xs">
         <template #body="{ data }">
           <img :src="data.image" class="w-full" />
         </template>
       </Column>
-    <Column field="description" header="Description" :sortable="true" />
-    <Column field="salaryRange" header="Salary Range" :sortable="true" />
+    <Column field="description" header="Description" :sortable="true" class="px-6 py-3 text-xs w-128" />
+    <Column ref="salaryRange"
+            field="salaryRange"
+            header="Salary Range"
+            class="px-6 py-3 text-s w-64"
+            :sortable="true"
+            >
+      <template #body="{ data }">
+        {{ formatCurrency(data.minSalary) }} - {{ formatCurrency(data.maxSalary) }}
+      </template>
+    </Column>
     <Column header="Action">
       <template #body>
         <Button
