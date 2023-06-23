@@ -20,8 +20,8 @@ watchEffect(() => {
 
 const navigation = [
   { label: "Home", path: "/", icon: PrimeIcons.HOME },
-  { label: "Jobs", path: "/jobs", icon: PrimeIcons.BRIEFCASE },
-  { label: "Notices", path: "/notifications", icon: PrimeIcons.BELL },
+  { label: "Offers", path: "/jobs", icon: PrimeIcons.BRIEFCASE },
+  { label: "Postulations", path: "/notifications", icon: PrimeIcons.SEND },
 ];
 
 const search = ref("");
@@ -127,16 +127,7 @@ const accountMenu = [
         </ul>
       </nav>
     </div>
-    <div
-    v-if="auth.loggedIn"
-      class="h-full w-full hidden sm:flex items-center border-x border-slate-200"
-      @click="handleSearch">
-      <i :class="PrimeIcons.SEARCH" class="ml-4 text-xl text-slate-400"></i>
-      <input
-        v-model="search"
-        class="px-4 py-3 h-full w-full bg-transparent placeholder:font-light placeholder:text-base placeholder:text-slate-400"
-        :placeholder="mq.lgPlus ? 'Quick search...' : 'Search...'" />
-    </div>
+
     <div
       class="flex items-center shrink-0 space-x-4 cursor-pointer"
       @click="event => menuRef.toggle(event)">
