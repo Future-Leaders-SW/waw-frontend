@@ -88,6 +88,7 @@ const handleRegister = async () => {
   let respuestaCV = await sendCV();
 
   if (respuestaCV > -1) {
+    user.cvId = respuestaCV;
     const success = await auth.register(user);
     if (success) {
 
