@@ -85,7 +85,7 @@ const accountMenu = [
   {
     label: "Suscription",
     command: () => {
-      router.push("/payment");
+      router.push("/plans");
     },
     icon: PrimeIcons.STAR,
     visible: () => auth.loggedIn,
