@@ -5,6 +5,7 @@
  */
 import payment from "../payment/pages/payment.componente.vue";
 import billing from "../billing/billing.componente.vue";
+import formjob from "../form_jobs/pagess/form-job.component.vue"
 export const routes = [
   {
     path: "/",
@@ -70,6 +71,11 @@ export const routes = [
     path: "/billing",
     name: "billing ",
     component: billing,
+  },
+  {
+    path: "/send-job",
+    name: "formjob",
+    component: formjob,
   },
   {
     path: "/plans",
