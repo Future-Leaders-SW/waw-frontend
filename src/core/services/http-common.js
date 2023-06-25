@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const http = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: 'https://1d115d41.waw-app.pages.dev/',
   headers: {
     "Content-type": "application/json",
   },

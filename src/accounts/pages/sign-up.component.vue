@@ -23,6 +23,7 @@ const toastService = useToast();
 const submitted = ref(false);
 let visibleDialog = ref(false);
 let cvFile = ref(null);
+let cvpdf = ref(null);
 const pdfUploaded = ref(false);
 const state = reactive({
   fullName: "",
@@ -123,9 +124,9 @@ const handleRegister = async () => {
 };
 
 const sendCV = async () => {
-  if (cvFile.value) {
+  if (cvpdf.value) {
     const formData = new FormData();
-    formData.append('file', cvFile.value);
+    formData.append('file', cvpdf.value);
 
     try {
       const response = await fetch('https://pdf-ocr-6zcqyqd5qa-ue.a.run.app/uploadpdf/', {
@@ -153,6 +154,7 @@ const sendCV = async () => {
 };
 
 const createCV = async (cvResponse) => {
+  /*
   // Supongamos que `cvFile.value` es el archivo PDF en formato base64.
   const data = cvFile.value;
   const body = { title: cvResponse.filename, extract: cvResponse.content, data };
@@ -165,10 +167,37 @@ const createCV = async (cvResponse) => {
   };
 
   try {
-    const response = await axios.post("http://localhost:3000/api/v1/cv", body, config);
+    const response = await http.post("https://1d115d41.waw-app.pages.dev/api/v1/cv", body, config);
     // Puedes manejar la respuesta aquí.
     console.log(response.data);
     return response.data.id;
+  } catch (error) {
+    console.error(error);
+    return -1;
+  }
+  */
+
+  const data = cvFile.value;
+  const body = { title: cvResponse.filename, extract: cvResponse.content, data };
+  console.log(body);
+  const config = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+
+  try {
+    const response = await fetch('https://1d115d41.waw-app.pages.dev/api/v1/cv', config);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data.id;
   } catch (error) {
     console.error(error);
     return -1;
@@ -188,6 +217,7 @@ const uploadCV = async (event) => {
   const file = event.target.files[0];
   if (file) {
     cvFile.value = await readFile(file);
+    cvpdf.value = file;
     pdfUploaded.value = true;
   } else {
     pdfUploaded.value = false;
