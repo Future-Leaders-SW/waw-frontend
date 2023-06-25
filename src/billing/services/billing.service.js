@@ -5,7 +5,7 @@ import { inject } from "vue";
 
 export class BillingService extends BaseService {
   constructor() {
-    super("/billing")
+    super("/plansubscription")
 
   }
 

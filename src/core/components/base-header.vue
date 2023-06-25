@@ -83,7 +83,7 @@ const accountMenu = [
     visible: () => auth.loggedIn,
   },
   {
-    label: "Suscription",
+    label: "Plans",
     command: () => {
       router.push("/plans");
     },
