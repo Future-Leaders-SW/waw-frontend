@@ -1,12 +1,12 @@
 import { BaseService } from "@/core/services/base.service";
 import { http } from "@/core/services/http-common";
-import { JobsServiceKey } from "@/core/utils/keys";
+import { BillingServiceKey} from "@/core/utils/keys";
 import { inject } from "vue";
 
-export class JobsService extends BaseService {
+export class BillingService extends BaseService {
   constructor() {
-    super("/offers");
-    //super("/subscription");
+    super("/plansubscription")
+
   }
 
   /**
@@ -20,6 +20,6 @@ export class JobsService extends BaseService {
 /**
  * @returns {JobsService}
  */
-export const useJobs = () => {
-  return inject(JobsServiceKey, null);
+export const useBilling = () => {
+  return inject(BillingServiceKey, null);
 };
