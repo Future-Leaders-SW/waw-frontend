@@ -66,7 +66,7 @@ const accountMenu = [
       router.push("/billing");
     },
     icon: PrimeIcons.MONEY_BILL,
-    visible: () => !auth.loggedIn,
+    visible: () => auth.loggedIn,
   },
 
   {
@@ -88,7 +88,7 @@ const accountMenu = [
       router.push("/plans");
     },
     icon: PrimeIcons.STAR,
-    visible: () => !auth.loggedIn,
+    visible: () => auth.loggedIn,
   },
   {
     label: "Sign Out",
@@ -100,6 +100,22 @@ const accountMenu = [
     visible: () => auth.loggedIn,
   },
 ];
+
+const plan =()=>{
+  router.push("/plans")
+}
+
+/*
+ <div v-if="auth.loggedIn || user.suscription === 0 " >
+
+      <button
+        class="bg-space hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        @click="plan()"
+      >
+        Upgrade
+      </button>
+    </div>
+ */
 </script>
 
 <template>
@@ -137,9 +153,11 @@ const accountMenu = [
         class="px-4 py-3 h-full w-full bg-transparent placeholder:font-light placeholder:text-base placeholder:text-slate-400"
         :placeholder="mq.lgPlus ? 'Quick search...' : 'Search...'" />
     </div>
+
     <div
       class="flex items-center shrink-0 space-x-4 cursor-pointer"
       @click="event => menuRef.toggle(event)">
+
       <div class="rounded-full overflow-hidden w-8 h-8">
         <Avatar
           v-if="auth.loggedIn && user?.picture?.href"
@@ -152,6 +170,8 @@ const accountMenu = [
           <i class="text-xl text-black mt-1" :class="PrimeIcons.USER"></i>
         </span>
       </div>
+
+
       <div class="hidden lg:flex flex-col space-y-1">
         <span class="text-xs font-medium">
           Hello, {{ auth.loggedIn ? user.preferredName : "Sign In" }}

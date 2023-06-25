@@ -1,23 +1,40 @@
 <script setup>
 import { Router } from "@/router";
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 import {useSubscriptionStore} from "@/stores/pagostores";
 import { storeToRefs } from "pinia";
 
 import { usePayment } from "@/payment/services/payment.service";
-import { useJobs } from "@/jobs/services/jobs.service";
+import { useAuth } from "@/accounts/services/auth.service.js";
+import {useBilling} from "@/billing/services/billing.service";
 
+const router = Router;
 const service = usePayment();
-const jobs = ref([]);
+const auth = useAuth();
+const serviceBilling = useBilling();
+const users = ref([]);
+const billing = ref([]);
+const user = ref(auth.user)
 
+const jobs = ref([]);
+const auxUsers = ref();
 const  useSubscription = useSubscriptionStore();
 
 const { datos } = storeToRefs(useSubscription);
+user.value = auth.user;
+console.log(user.value)
+const aux1 = ref(0);
 
-let list1 = ref([]);
-console.log(datos)
+console.log(datos);
 const subscription =datos;
 console.log(subscription.value)
+
+let subscriptionId = ref(1)
+const userId = ref("Pro")
+const startDate = ref(30)
+const endDate = ref(25)
+const payedAmount = ref("asdsfsd")
+const payedDate = ref(1)
 
 
 
@@ -30,33 +47,62 @@ const precioMaster = ref(40);
 const message = ref(0);
 
 
+
+//para ver is esta logeado
+onBeforeMount(() => {
+  if (!auth.loggedIn) {
+    router.push("/account/signin");
+  }
+});
+
 ref(0);
 const processPay = async () => {
   if (!cardName.value || !tarjeta.value || !fechaVen.value || !cvc.value) {
     message.value = 1;
-  } else {
+  }
+  const allUsers = await auth.getAll();
+  users.value = allUsers.data;
+  console.log(users.value)
+
+
+
+    let res = null;
     const response = await service.getAll();
-
-
     jobs.value = response.data;
-
-    console.log(response.data)
-    console.log("la compra fue correcta");
-    Router.push("/");
+    console.log(jobs.value)
+   console.log(subscription.value)
+  if(subscription.value +1 === jobs.value[1].id){
+    console.log(jobs.value[1].item)
+    aux1.value = 1;
   }
+  else if(subscription.value +1 === jobs.value[2].id){
+    console.log(jobs.value[2].item);
+    aux1.value = 2;
+  }
+
+    try{
+        res = await serviceBilling.create(
+          {
+            subscriptionId : aux1.value,
+            userId : user,
+            startDate: "",
+            endDate:"",
+            payedAmount : jobs.value[aux1.value].cost,
+            payedDate:""
+          }
+        );
+
+
+      console.log(res.data)
+      router.push("/");
+    }catch (e){
+      console.log("error al cargar informacion")
+    }finally {
+
+      console.log("la compra fue correcta");
+    }
+
 };
-
-/*
-const calcularCosto =()=>{
-  if(subscription === 0){
-    precio.value = 25;
-  }else {
-    precio.value = 40;
-  }
-}
- */
-
-
 </script>
 
 <template>
