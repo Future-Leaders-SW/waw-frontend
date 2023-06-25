@@ -10,6 +10,11 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
+import { useAuth } from "@/accounts/services/auth.service.js";
+
+
+const auth = useAuth();
+const user = ref(auth.user)
 
 const service = useJobs();
 const jobs = ref([]);
@@ -53,6 +58,11 @@ const formatCurrency = (value) => {
   return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
 
+const optimizarJobs= async (item)=>{
+  const response = await service.getById(item);
+  jobs.value = response.data;
+}
+
 onMounted(async () => {
   const response = await service.getAll();
   jobs.value = response.data;
@@ -87,8 +97,10 @@ onMounted(async () => {
               placeholder="Search..." />
           </span>
           <button
+            @click="optimizarJobs(user)"
             class="ml-auto border-2 border-teal-300 p-2 rounded-md bg-teal-300 text-black ">
             🤖 Optimizar con IA
+
           </button>
         </div>
 
