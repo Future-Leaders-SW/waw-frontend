@@ -203,7 +203,7 @@ export class AuthService extends BaseService {
     }
 
     try {
-      await http.post(`${this.endpoint}/register`, user);
+      await http.post(`https://staging-dot-wawapi.uc.r.appspot.com/api/v1/users/register`, user);
       return true;
     } catch (err) {
       return false;

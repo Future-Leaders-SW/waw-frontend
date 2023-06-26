@@ -12,6 +12,7 @@ import { reactive, computed, ref } from "vue";
 import { useRouter, RouterLink } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import { http } from "@/core/services/http-common";
+import axios from 'axios';
 
 
 import { useAuth } from "../services/auth.service";
@@ -154,52 +155,33 @@ const sendCV = async () => {
 };
 
 const createCV = async (cvResponse) => {
-  /*
-  // Supongamos que `cvFile.value` es el archivo PDF en formato base64.
-  const data = cvFile.value;
-  const body = { title: cvResponse.filename, extract: cvResponse.content, data };
+  if (cvpdf.value) {
+    const formData = new FormData();
+    formData.append('data', cvpdf.value);
+    formData.append('title', cvResponse.filename);
+    formData.append('extract', cvResponse.content);
 
-  // Configuración de axios para enviar datos binarios.
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
+    try {
+      const response = await axios.post('https://staging-dot-wawapi.uc.r.appspot.com/api/v1/cv', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log(response)
+      //const respuestaCV = await response.json()
+      if (response.status != 200) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = response.data;
+      console.log(data);
+      return data.id;
+    } catch (error) {
+      console.error(error);
+      return -1;
     }
-  };
-
-  try {
-    const response = await http.post("https://1d115d41.waw-app.pages.dev/api/v1/cv", body, config);
-    // Puedes manejar la respuesta aquí.
-    console.log(response.data);
-    return response.data.id;
-  } catch (error) {
-    console.error(error);
-    return -1;
-  }
-  */
-
-  const data = cvFile.value;
-  const body = { title: cvResponse.filename, extract: cvResponse.content, data };
-  console.log(body);
-  const config = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  };
-
-  try {
-    const response = await fetch('https://1d115d41.waw-app.pages.dev/api/v1/cv', config);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log(data);
-    return data.id;
-  } catch (error) {
-    console.error(error);
+  } else {
+    console.log('No file to send');
     return -1;
   }
 };
