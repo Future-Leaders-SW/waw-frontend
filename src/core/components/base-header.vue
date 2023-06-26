@@ -20,7 +20,7 @@ watchEffect(() => {
 
 const navigation = [
   { label: "Home", path: "/", icon: PrimeIcons.HOME },
-  { label: "Offers", path: "/jobs", icon: PrimeIcons.BRIEFCASE },
+  { label: "Offers", path: "/jobs/", icon: PrimeIcons.BRIEFCASE },
   { label: "Postulations", path: "/notifications", icon: PrimeIcons.SEND },
 ];
 
