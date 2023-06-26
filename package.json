@@ -8,7 +8,17 @@
     "build": "vite build",
     "preview": "vite preview --port 5050",
     "test": "concurrently -s -n test: 'npm:test:*'",
-    "test:unit": "vitest --environment jsdom --run"
+    "test:unit": "vitest --environment jsdom --run",
+    "lint": "concurrently -s -n lint: 'npm:lint:*(!fix)'",
+    "lint:js": "eslint --cache --ext .js,.vue .",
+    "lint:css": "stylelint --cache src/**/*.css src/**/*.vue",
+    "lint:md": "markdownlint-cli2 README.md \"**/*.md\" \".github/**/*.md\" \"#node_modules\"",
+    "lint:prettier": "prettier --check .",
+    "lint:fix": "concurrently -s -n lint:fix: 'npm:lint:fix:*'",
+    "lint:fix:js": "eslint --cache --ext .js,.vue --fix .",
+    "lint:fix:css": "stylelint --cache --fix src/**/*.css src/**/*.vue",
+    "lint:fix:md": "markdownlint-cli2-fix README.md \"**/*.md\" \".github/**/*.md\" \"#node_modules\"",
+    "lint:fix:prettier": "prettier --write ."
   },
   "dependencies": {
     "@vuelidate/core": "^2.0.0-alpha.42",
@@ -26,17 +36,34 @@
     "vue3-mq": "^3.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@rushstack/eslint-patch": "^1.1.0",
     "@tailwindcss/forms": "^0.5.1",
     "@vitejs/plugin-vue": "^2.3.1",
     "@vue/test-utils": "^2.0.0-rc.20",
     "autoprefixer": "^10.4.5",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-vue": "^9.1.1",
     "jsdom": "^19.0.0",
     "json-server": "^0.17.0",
     "lint-staged": "^13.0.2",
     "markdownlint-cli2": "^0.4.0",
     "postcss": "^8.4.13",
+    "prettier": "^2.5.1",
+    "stylelint": "^14.8.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-recommended-vue": "^1.4.0",
+    "stylelint-config-standard": "^25.0.0",
     "tailwindcss": "^3.0.24",
     "vite": "^2.9.5",
     "vitest": "^0.9.3"
+  },
+  "lint-staged": {
+    "*.{css,vue}": "stylelint --cache --fix",
+    "*.{js,vue}": "eslint --cache --fix",
+    "*.{js,vue,html,css,md,json,yml}": "prettier --write",
+    "*.md": "markdownlint-cli2-fix"
   }
 }

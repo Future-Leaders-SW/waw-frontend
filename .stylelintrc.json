@@ -23,10 +23,15 @@
     "function-no-unknown": [
       true,
       {
-        "ignoreFunctions": ["theme"]
+        "ignoreFunctions": [
+          "theme"
+        ]
       }
     ],
     "declaration-no-important": true
   },
-  "ignoreFiles": ["node_modules/**/*.css", "src/**/*.js"]
+  "ignoreFiles": [
+    "node_modules/**/*.css",
+    "src/**/*.js"
+  ]
 }

@@ -135,7 +135,7 @@ const deleteItems = async () => {
     await Promise.all(
       pendingDeletion.value.map(item => {
         return jobsService.delete(item.id);
-      })
+      }),
     );
     toastService.add({
       severity: ToastSeverity.SUCCESS,

@@ -48,8 +48,8 @@ const selectedLang = ref(languages[0]);
         class="space-y-4 flex flex-col">
         <span class="font-medium">{{ group.label }}</span>
         <span v-for="link in group.items" :key="link.label">{{
-          link.label
-        }}</span>
+            link.label
+          }}</span>
       </div>
     </nav>
     <div class="flex flex-col mb-24 md:mb-0">
