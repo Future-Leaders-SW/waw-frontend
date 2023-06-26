@@ -54,7 +54,7 @@ const getDisplayableExpDates = (startDate, endDate) => {
   return `${msgs.start} — ${msgs.end}`;
 };
 
-const downloadCV = async () => {
+/*const downloadCV = async () => {
   try {
     const userId = auth.store.user.id;
     const response = await fetch(`https://staging-dot-wawapi.uc.r.appspot.com/api/v1/cv/${userId}/file`);
@@ -70,7 +70,7 @@ const downloadCV = async () => {
   } catch (error) {
     console.error('There was a problem with the fetch operation: ' + error.message);
   }
-};
+};*/
 
 
 </script>
@@ -87,7 +87,7 @@ const downloadCV = async () => {
             <Avatar class="avatar-contain !h-48 !w-48 absolute inset-0 left-8 -top-16 border-8 border-white"
                     :image="auth.store.user.picture?.href" shape="circle" />
             <div class="flex justify-center">
-              <button type="button" class="w-full py-2 px-3 rounded transition-colors text-white bg-slate-500 hover:bg-slate-700 font-semibold mt-2" @click="downloadCV">
+              <button type="button" class="w-full py-2 px-3 rounded transition-colors text-white bg-slate-500 hover:bg-slate-700 font-semibold mt-2"  >
                 Download CV
               </button>
             </div>
