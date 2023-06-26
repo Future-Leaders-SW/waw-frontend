@@ -34,7 +34,12 @@ const state = reactive({
   password: "",
   confirmPassword: "",
   birthdate: new Date(),
+  biography: "",
   checked: false,
+  cover : {
+    href: "https://picsum.photos/2000/3000",
+    alt: "cover_img"
+  },
 });
 
 
@@ -68,6 +73,7 @@ const rules = computed(() => ({
       () => pdfUploaded.value,
     ),
   },
+
 }));
 
 const v$ = useVuelidate(rules, state);
@@ -277,6 +283,9 @@ const handleButtonClick = async () => {
         </span>
       </div>
 
+
+
+
       <div class="w-full">
         <span class="p-float-label w-full">
           <InputText id="signup_email" v-model="v$.email.$model" type="email" class="rounded w-full !bg-transparent"
@@ -345,6 +354,23 @@ const handleButtonClick = async () => {
         </span>
       </div>
 
+      <div class="w-full">
+        <span class="p-float-label w-full">
+          <InputText id="signup_pictureAlt" v-model="v$.picture.alt.$model" type="text"
+                     class="rounded w-full !bg-transparent"
+                     :class="{ 'p-invalid': v$.picture.alt.$invalid && submitted }"
+                     aria-describedby="signup_pictureAlt-error" />
+          <label for="signup_pictureAlt" class="!bg-slate-100"
+                 :class="{ 'p-error': v$.picture.alt.$invalid && submitted }">
+            URL Profile Image
+          </label>
+        </span>
+        <span v-if="v$.picture.alt.$error && submitted">
+          <span v-for="(error, index) of v$.picture.alt.$errors" id="signup_pictureAlt-error" :key="index">
+            <small class="p-error">{{ error.$message }}</small>
+          </span>
+        </span>
+      </div>
 
       <div class="w-full" style="display: flex; flex-direction: column; align-items: center;">
         <label for="uploadCV" class="!bg-slate-100">
@@ -361,6 +387,9 @@ const handleButtonClick = async () => {
           Sube tu CV para obtener ofertas personalizadas.
         </p>
       </div>
+
+
+
 
 
       <div class="my-4">
