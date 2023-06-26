@@ -67,7 +67,7 @@ const getDisplayableExpDates = (startDate, endDate) => {
             <Avatar class="avatar-contain !h-48 !w-48 absolute inset-0 left-8 -top-16 border-8 border-white"
                     :image="auth.store.user.picture?.href" shape="circle" />
             <div class="flex justify-center">
-              <a href="path/to/your/cv" target="_blank"
+              <a :href="'https://staging-dot-wawapi.uc.r.appspot.com/api/v1/cv/'+auth.store.user.id+'/file'" target="_blank"
                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Watch my CV </a>
             </div>

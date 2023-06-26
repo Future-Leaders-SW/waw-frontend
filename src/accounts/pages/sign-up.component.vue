@@ -40,6 +40,10 @@ const state = reactive({
     href: "https://picsum.photos/2000/3000",
     alt: "cover_img"
   },
+  picture : {
+    href: "https://picsum.photos/2000/3000",
+    alt: "cover_img"
+  },
 });
 
 
@@ -356,17 +360,17 @@ const handleButtonClick = async () => {
 
       <div class="w-full">
         <span class="p-float-label w-full">
-          <InputText id="signup_pictureAlt" v-model="v$.picture.alt.$model" type="text"
+          <InputText id="signup_pictureHref" v-model="v$.picture.href.$model" type="text"
                      class="rounded w-full !bg-transparent"
-                     :class="{ 'p-invalid': v$.picture.alt.$invalid && submitted }"
-                     aria-describedby="signup_pictureAlt-error" />
-          <label for="signup_pictureAlt" class="!bg-slate-100"
-                 :class="{ 'p-error': v$.picture.alt.$invalid && submitted }">
-            URL Profile Image
+                     :class="{ 'p-invalid': v$.picture.href.$invalid && submitted }"
+                     aria-describedby="signup_pictureHref-error" />
+          <label for="signup_pictureHref" class="!bg-slate-100"
+                 :class="{ 'p-error': v$.picture.href.$invalid && submitted }">
+            Profile Image URL
           </label>
         </span>
-        <span v-if="v$.picture.alt.$error && submitted">
-          <span v-for="(error, index) of v$.picture.alt.$errors" id="signup_pictureAlt-error" :key="index">
+        <span v-if="v$.picture.href.$error && submitted">
+          <span v-for="(error, index) of v$.picture.href.$errors" id="signup_pictureHref-error" :key="index">
             <small class="p-error">{{ error.$message }}</small>
           </span>
         </span>
