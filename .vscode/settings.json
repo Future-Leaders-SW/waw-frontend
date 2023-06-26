@@ -13,7 +13,10 @@
   "javascript.preferences.quoteStyle": "double",
   "javascript.referencesCodeLens.enabled": true,
   "eslint.packageManager": "npm",
-  "eslint.validate": ["javascript", "vue"],
+  "eslint.validate": [
+    "javascript",
+    "vue"
+  ],
   "[html][vue][javascript][json][jsonc][css][markdown][yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

@@ -37,7 +37,7 @@ const getDisplayableDate = date => {
 const getDisplayableExpDates = (startDate, endDate) => {
   if (!(startDate instanceof Date)) {
     throw new Error(
-      `Invalid start date, got ${typeof startDate}: ${startDate}`
+      `Invalid start date, got ${typeof startDate}: ${startDate}`,
     );
   }
 
@@ -72,8 +72,8 @@ const getDisplayableExpDates = (startDate, endDate) => {
           <div class="flex flex-col p-8 w-full space-y-2">
             <div class="flex justify-between w-full">
               <span class="text-xl font-medium">{{
-                auth.store.user.fullName
-              }}</span>
+                  auth.store.user.fullName
+                }}</span>
               <div class="text-sm text-slate-700 space-x-1 flex items-center">
                 <i :class="PrimeIcons.MAP_MARKER" class="text-sm"></i>
                 <span>{{ auth.store.user.location }}</span>

@@ -6,31 +6,31 @@
 
 /* PrimeVue overrides that could cause conflicts with Tailwind */
 :root {
-  --font-family: theme("fontFamily.sans");
+    --font-family: theme("fontFamily.sans");
 }
 
 body {
-  @apply bg-slate-100 text-slate-900;
+    @apply bg-slate-100 text-slate-900;
 
-  font-size: 16px;
-  transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
-  text-rendering: optimizelegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
+    text-rendering: optimizelegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 a,
 button {
-  @apply cursor-pointer focus:outline-none focus:ring-0;
+    @apply cursor-pointer focus:outline-none focus:ring-0;
 }
 
 a[disabled],
 button[disabled] {
-  @apply cursor-default pointer-events-none;
+    @apply cursor-default pointer-events-none;
 }
 
 input:focus-visible {
-  @apply outline-none ring-0;
+    @apply outline-none ring-0;
 }
 
 @tailwind components;
@@ -39,17 +39,17 @@ input:focus-visible {
 .p-component,
 .p-link,
 .p-autocomplete
-  .p-autocomplete-multiple-container
-  .p-autocomplete-input-token
-  input,
+.p-autocomplete-multiple-container
+.p-autocomplete-input-token
+input,
 .p-chips .p-chips-multiple-container .p-chips-input-token input,
 .p-inputtext,
 .p-terminal .p-terminal-input {
-  @apply font-sans;
+    @apply font-sans;
 }
 
 .p-checkbox-box ::before {
-  @apply box-content;
+    @apply box-content;
 }
 
 @tailwind utilities;

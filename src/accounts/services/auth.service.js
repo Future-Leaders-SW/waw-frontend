@@ -103,9 +103,9 @@ export class AuthService extends BaseService {
    * @param {boolean} props.throws
    */
   async initState({ refetchUser = false, throws = false } = {}) {
-   const endpoints = [];
+    const endpoints = [];
 
-   if (refetchUser) endpoints.push("/me");
+    if (refetchUser) endpoints.push("/me");
 
 
     const promises = endpoints.map(async endpoint => {
@@ -171,7 +171,7 @@ export class AuthService extends BaseService {
     try {
       const body = JSON.stringify({ email, password });
       const response = await http.post(`https://staging-dot-wawapi.uc.r.appspot.com/api/v1/users/login`, body);
-      console.log(response)
+      console.log(response);
       if (response.status !== 200) return false;
 
       /** @type {UserWithToken} */
@@ -188,7 +188,7 @@ export class AuthService extends BaseService {
       });
       return true;
     } catch (err) {
-      console.log(err)
+      console.log(err);
       this.clearState();
       return false;
     }

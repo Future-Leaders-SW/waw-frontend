@@ -47,7 +47,7 @@ const handleLogin = async () => {
       <div class="w-full">
         <span class="p-float-label w-full">
           <InputText id="signin_email" v-model="v$.email.$model" type="email" class="rounded w-full !bg-transparent"
-            :class="{ 'p-invalid': v$.email.$invalid && submitted }" aria-describedby="signin_email-error" />
+                     :class="{ 'p-invalid': v$.email.$invalid && submitted }" aria-describedby="signin_email-error" />
           <label for="signin_email" class="!bg-slate-100" :class="{ 'p-error': v$.email.$invalid && submitted }">
             Email
           </label>
@@ -62,8 +62,8 @@ const handleLogin = async () => {
       <div class="w-full">
         <span class="p-float-label w-full">
           <InputText id="signin_password" v-model="v$.password.$model" type="password"
-            class="rounded w-full !bg-transparent" :class="{ 'p-invalid': v$.password.$invalid && submitted }"
-            aria-describedby="signin_password-error" />
+                     class="rounded w-full !bg-transparent" :class="{ 'p-invalid': v$.password.$invalid && submitted }"
+                     aria-describedby="signin_password-error" />
           <label for="signin_password" class="!bg-slate-100" :class="{ 'p-error': v$.password.$invalid && submitted }">
             Password
           </label>
@@ -77,7 +77,7 @@ const handleLogin = async () => {
 
       <div class="my-2 w-full">
         <button type="submit"
-          class="w-full py-2 px-3 rounded transition-colors text-white bg-slate-500 hover:bg-slate-700 font-semibold">
+                class="w-full py-2 px-3 rounded transition-colors text-white bg-slate-500 hover:bg-slate-700 font-semibold">
           Sign In
         </button>
       </div>

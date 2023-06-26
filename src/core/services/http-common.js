@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const http = axios.create({
-  baseURL: 'https://staging-dot-wawapi.uc.r.appspot.com/',
+  baseURL: "https://staging-dot-wawapi.uc.r.appspot.com/",
   headers: {
     "Content-type": "application/json",
   },
@@ -20,5 +20,5 @@ http.interceptors.request.use(
 
     return config;
   },
-  error => Promise.reject(error)
+  error => Promise.reject(error),
 );
