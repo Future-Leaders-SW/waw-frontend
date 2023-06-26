@@ -20,7 +20,7 @@ watchEffect(() => {
 
 const navigation = [
   { label: "Home", path: "/", icon: PrimeIcons.HOME },
-  { label: "Offers", path: "/jobs/", icon: PrimeIcons.BRIEFCASE },
+  { label: "Offers", path: "/jobs/search", icon: PrimeIcons.BRIEFCASE },
   { label: "Postulations", path: "/notifications", icon: PrimeIcons.SEND },
 ];
 
@@ -116,7 +116,7 @@ const accountMenu = [
           <RouterLink
             v-for="item in navigation"
             :key="item.path"
-            :to="user.email === 'admin@waw.com' && item.path === '/jobs/search' ? '/jobs/admin' : item.path">
+            :to="auth.store.user.email === 'admin@waw.com' && item.path === '/jobs/search' ? '/jobs/admin' : item.path">
             <li class="flex flex-col space-y-2">
               <i :class="item.icon" class="text-xl"></i>
               <span class="text-xs font-medium uppercase">
