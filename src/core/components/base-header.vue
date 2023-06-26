@@ -116,7 +116,7 @@ const accountMenu = [
           <RouterLink
             v-for="item in navigation"
             :key="item.path"
-            :to="user.email === 'admin@waw.com' && item.path === '/jobs' ? '/jobs/admin' : item.path">
+            :to="user.email === 'admin@waw.com' && item.path === '/jobs/search' ? '/jobs/admin' : item.path">
             <li class="flex flex-col space-y-2">
               <i :class="item.icon" class="text-xl"></i>
               <span class="text-xs font-medium uppercase">
