@@ -36,9 +36,6 @@ const state = reactive({
   birthdate: new Date(),
   biography: "",
   checked: false,
-  picture: {
-    href: "",
-  },
 });
 
 
