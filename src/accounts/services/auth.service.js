@@ -70,7 +70,7 @@ import { inject, reactive } from "vue";
 
 export class AuthService extends BaseService {
   constructor() {
-    super("/users");
+    super("/api/v1/users");
 
     this.token = useStorage("user-token", "", localStorage, {
       listenToStorageChanges: true,
@@ -103,13 +103,16 @@ export class AuthService extends BaseService {
    * @param {boolean} props.throws
    */
   async initState({ refetchUser = true, throws = false } = {}) {
-    const endpoints = ["/me/education", "/me/experience", "/me/projects"];
-    if (refetchUser) endpoints.push("/me");
+   const endpoints = [];
+    
+   if (refetchUser) endpoints.push("/me");
 
+   
     const promises = endpoints.map(async endpoint => {
       const response = await http.get(this.endpoint + endpoint);
       return { endpoint, response };
     });
+    
 
     try {
       const responses = await Promise.all(promises);
@@ -124,6 +127,7 @@ export class AuthService extends BaseService {
       if (refetchUser) {
         this.state.user = parseFieldsAsDate(findResponse("/me"), ["birthdate"]);
       }
+      /*
       this.state.education = findResponse("/me/education");
       this.state.experience = parseFieldsAsDate(
         findResponse("/me/experience"),
@@ -132,6 +136,7 @@ export class AuthService extends BaseService {
       this.state.projects = parseFieldsAsDate(findResponse("/me/projects"), [
         "date",
       ]);
+      */
     } catch (err) {
       // Unable to fetch, throw if requested
       if (throws) throw err;
@@ -165,8 +170,8 @@ export class AuthService extends BaseService {
   async login(email, password) {
     try {
       const body = JSON.stringify({ email, password });
-      const response = await http.post(`${this.endpoint}/login`, body);
-
+      const response = await http.post(`https://staging-dot-wawapi.uc.r.appspot.com/api/v1/users/login`, body);
+      console.log(response)
       if (response.status !== 200) return false;
 
       /** @type {UserWithToken} */
@@ -183,6 +188,7 @@ export class AuthService extends BaseService {
       });
       return true;
     } catch (err) {
+      console.log(err)
       this.clearState();
       return false;
     }
