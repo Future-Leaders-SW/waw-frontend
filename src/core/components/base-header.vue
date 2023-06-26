@@ -120,7 +120,7 @@ const accountMenu = [
             <li class="flex flex-col space-y-2">
               <i :class="auth.store.user.email === 'admin@waw.com' && item.path === '/my-postulations' ? '' : item.icon " class="text-xl"></i>
               <span class="text-xs font-medium uppercase">
-                {{ item.label }}
+                {{ auth.store.user.email === 'admin@waw.com' && item.path === '/my-postulations' ? '' : item.label }}
               </span>
             </li>
           </RouterLink>
