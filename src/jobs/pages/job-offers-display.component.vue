@@ -65,7 +65,7 @@ const formatCurrency = (value) => {
 
 onMounted(async () => {
   const response = await service.getAll();
-  jobs.value = response.data.filter(job => job.published === true);
+  jobs.value = response.data.filter(job => job.status === true);
 });
 </script>
 
