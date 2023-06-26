@@ -36,7 +36,8 @@ const endDate = ref(25)
 const payedAmount = ref("asdsfsd")
 const payedDate = ref(1)
 
-
+const usuarioActivo = ref();
+usuarioActivo.value = user.value.id;
 
 const cardName = ref("");
 const tarjeta = ref();
@@ -84,7 +85,7 @@ const processPay = async () => {
         res = await serviceBilling.create(
           {
             subscriptionId : aux1.value,
-            userId : user,
+            userId : usuarioActivo.value,
             startDate: "",
             endDate:"",
             payedAmount : jobs.value[aux1.value].cost,
@@ -94,11 +95,10 @@ const processPay = async () => {
 
 
       console.log(res.data)
-      router.push("/");
     }catch (e){
       console.log("error al cargar informacion")
     }finally {
-
+      router.push("/");
       console.log("la compra fue correcta");
     }
 

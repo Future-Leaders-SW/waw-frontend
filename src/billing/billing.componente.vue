@@ -8,6 +8,8 @@ import { useAuth } from "@/accounts/services/auth.service.js";
 const  useSubscription = useSubscriptionStore();
 const auth = useAuth();
 const user = ref(auth.user)
+const usuarioActivo = ref();
+usuarioActivo.value = user.value.id;
 const { datos } = storeToRefs(useSubscription);
 
 
@@ -42,49 +44,8 @@ const formatDate = (dateString) => {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("es-ES", options);
 };
-/*
-<div>
-        <div v-if="subscription === 0 || subscription === 1">
-          <div v-if="subscription === 0" class="gap-4" >
 
-            <div class="bg-white shadow-lg rounded-lg p-6 w-full my-4">
-              <h3 class="text-xl font-bold mb-4">Boleta 1</h3>
-              <div class="flex justify-between">
-                <p class="text-gray-600 block">Plan Pro</p>
-              </div>
-              <div class="flex justify-between">
-                <p class="text-gray-600">Fecha</p>
-                <p class="text-gray-600">05/05/23</p>
-              </div>
-              <div class="flex justify-between">
-                <p class="text-gray-600">Total</p>
-                <p class="text-gray-600">$ 25.00</p>
-              </div>
-            </div>
-          </div>
-          <div v-if="subscription === 1 " class="gap-4" >
 
-            <div class="bg-white shadow-lg rounded-lg p-6 w-full my-4">
-              <h3 class="text-xl font-bold mb-4">Boleta 1</h3>
-              <div class="flex justify-between">
-                <p class="text-gray-600 block">Plan Master</p>
-              </div>
-              <div class="flex justify-between">
-                <p class="text-gray-600">Fecha</p>
-                <p class="text-gray-600">05/05/23</p>
-              </div>
-              <div class="flex justify-between">
-                <p class="text-gray-600">Total</p>
-                <p class="text-gray-600">$ 40.00</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div v-else>
-          <h1 class="font-bold text-3xl ml-12">No hay Boletas</h1>
-        </div>
-      </div>
- */
 </script>
 
 <template>
@@ -102,7 +63,7 @@ const formatDate = (dateString) => {
         :key="item.id"
 
       >
-       <div v-if="item.userId===user"  class="bg-gray-200 p-4 mb-2">
+       <div v-if="item.userId===usuarioActivo"  class="bg-gray-200 p-4 mb-2">
          <div>
            <h2>Boleta </h2>
 

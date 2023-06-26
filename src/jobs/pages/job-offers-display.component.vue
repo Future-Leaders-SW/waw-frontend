@@ -73,60 +73,86 @@ onMounted(async () => {
     current-page-report-template="Showing {first} to {last} of {totalRecords} job offers"
     responsive-layout="scroll"
     class="rounded overflow-hidden">
+
     <template #header>
-      <div
-        class="flex flex-col md:flex-row md:justify-between md:items-center">
-        <h2 class="mb-2 md:m-0 p-as-md-center text-xl">Available Job Offers</h2>
-        <div>
-          <span class="p-input-icon-left">
-            <i :class="PrimeIcons.SEARCH"></i>
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-semibold">Available Job Offers</h2>
+        <div class="flex items-center space-x-4">
+          <div class="relative">
             <InputText
               v-model="filters['global'].value"
               class="rounded"
               type="text"
-              placeholder="Search..." />
-          </span>
-          <button
-            class="ml-auto border-2 border-teal-300 p-2 rounded-md bg-teal-300 text-black ">
+              placeholder="Search..."
+              :icon="PrimeIcons.SEARCH"
+            />
+          </div>
+          <Button
+            class="border-2 border-teal-300 p-2 rounded-md bg-teal-300 text-black"
+          >
             🤖 Optimizar con IA
-          </button>
+          </Button>
         </div>
-
       </div>
     </template>
-    <template #empty>No offers were found.</template>
+
+    <template #empty>
+      <div class="text-gray-500">No offers were found.</div>
+    </template>
 
     <template #loading>Loading...</template>
 
     <Column field="title" header="Title" :sortable="true" />
+
     <Column
-        field="image"
-        header=""
-        header-class="w-40"
-        class="px-6 py-3 text-xs">
-        <template #body="{ data }">
-          <img :src="data.image" class="w-full" />
-        </template>
-      </Column>
-    <Column field="description" header="Description" :sortable="true" class="px-6 py-3 text-xs w-128" />
-    <Column ref="salaryRange"
-            field="salaryRange"
-            header="Salary Range"
-            class="px-6 py-3 text-s w-64"
-            :sortable="true"
-            >
+      field="image"
+      header=""
+      header-class="w-40"
+      class="px-6 py-3 text-xs"
+    >
       <template #body="{ data }">
-        {{ formatCurrency(data.minSalary) }} - {{ formatCurrency(data.maxSalary) }}
+        <img :src="data.image" class="w-full" alt="Job Image" />
       </template>
     </Column>
+
+    <Column
+      field="description"
+      header="Description"
+      :sortable="true"
+      class="px-6 py-3 text-xs w-128"
+    />
+
+    <Column
+      ref="salaryRange"
+      field="salaryRange"
+      header="Salary Range"
+      class="px-6 py-3 text-s w-64"
+      :sortable="true"
+      :filter-match-mode="FilterMatchMode.RANGE"
+      :filter-function="(value, filter) => {
+        const [min, max] = filter.split('-');
+        const salary = value.replace(/[^0-9.-]+/g,'');
+        return parseFloat(salary) >= parseFloat(min) && parseFloat(salary) <= parseFloat(max);
+      }"
+    >
+      <template #body="{ data }">
+        <div class="text-sm">
+          <span>{{ formatCurrency(data.minSalary) }}</span>
+          <span class="mx-1">-</span>
+          <span>{{ formatCurrency(data.maxSalary) }}</span>
+        </div>
+      </template>
+    </Column>
+
     <Column header="Action">
-      <template #body>
+      <template #body="{ data }">
         <Button
           label="Apply"
           class="p-button-primary p-button-text"
-          @click="handleConfirmation()">
-        </Button>
+          @click="handleConfirmation(data)"
+        ></Button>
       </template>
     </Column>
+
   </DataTable>
 </template>
