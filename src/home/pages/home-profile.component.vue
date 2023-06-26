@@ -53,6 +53,26 @@ const getDisplayableExpDates = (startDate, endDate) => {
 
   return `${msgs.start} — ${msgs.end}`;
 };
+
+const downloadCV = async () => {
+  try {
+    const userId = auth.store.user.id;
+    const response = await fetch(`https://staging-dot-wawapi.uc.r.appspot.com/api/v1/cv/${userId}/file`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'cv.pdf';
+    link.click();
+  } catch (error) {
+    console.error('There was a problem with the fetch operation: ' + error.message);
+  }
+};
+
+
 </script>
 <template>
   <div v-if="auth.loggedIn" class="p-16 flex space-x-8 max-w-screen-2xl">
@@ -67,9 +87,9 @@ const getDisplayableExpDates = (startDate, endDate) => {
             <Avatar class="avatar-contain !h-48 !w-48 absolute inset-0 left-8 -top-16 border-8 border-white"
                     :image="auth.store.user.picture?.href" shape="circle" />
             <div class="flex justify-center">
-              <a :href="'https://staging-dot-wawapi.uc.r.appspot.com/api/v1/cv/'+auth.store.user.id+'/file'" target="_blank"
-                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Watch my CV </a>
+              <button type="button" class="w-full py-2 px-3 rounded transition-colors text-white bg-slate-500 hover:bg-slate-700 font-semibold mt-2" @click="downloadCV">
+                Download CV
+              </button>
             </div>
           </div>
           <div class="flex flex-col p-8 w-full space-y-2">
