@@ -34,7 +34,6 @@ const state = reactive({
   password: "",
   confirmPassword: "",
   birthdate: new Date(),
-  biography: "",
   checked: false,
 });
 
