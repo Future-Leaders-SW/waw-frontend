@@ -19,6 +19,10 @@ export class JobsService extends BaseService {
   findByJobs(title){
     return http.get(`${this.endpoint}?title=${title}`)
   }
+
+  findByUserId(userId) {
+    return http.get(`/${userId}/scoreoffers`);
+  }
 }
 
 /**

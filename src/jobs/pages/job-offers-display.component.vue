@@ -59,7 +59,7 @@ const formatCurrency = (value) => {
 };
 
 const optimizarJobs= async (item)=>{
-  const response = await service.getById(item);
+  const response = await service.findByUserId(item);
   jobs.value = response.data;
 }
 
