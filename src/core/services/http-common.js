@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export const http = axios.create({
-  baseURL: 'https://staging-dot-wawapi.uc.r.appspot.com/',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+ // baseURL: 'https://staging-dot-wawapi.uc.r.appspot.com/',
 headers: {
     "Content-type": "application/json",
   },

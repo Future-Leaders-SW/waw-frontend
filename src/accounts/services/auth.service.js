@@ -70,7 +70,7 @@ import { inject, reactive } from "vue";
 
 export class AuthService extends BaseService {
   constructor() {
-    super("/api/v1/users");
+    super("/users");
 
     this.token = useStorage("user-token", "", localStorage, {
       listenToStorageChanges: true,
@@ -170,7 +170,7 @@ export class AuthService extends BaseService {
   async login(email, password) {
     try {
       const body = JSON.stringify({ email, password });
-      const response = await http.post(`https://staging-dot-wawapi.uc.r.appspot.com/api/v1/users/login`, body);
+      const response = await http.post(`${this.endpoint}/login`, body);
       console.log(response);
       if (response.status !== 200) return false;
 
@@ -209,7 +209,7 @@ export class AuthService extends BaseService {
     }
 
     try {
-      await http.post(`https://staging-dot-wawapi.uc.r.appspot.com/api/v1/users/register`, user);
+      await http.post(`${this.endpoint}/register`, user);
       return true;
     } catch (err) {
       return false;
