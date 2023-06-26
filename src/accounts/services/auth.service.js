@@ -102,17 +102,17 @@ export class AuthService extends BaseService {
    * @param {boolean} props.refetchUser
    * @param {boolean} props.throws
    */
-  async initState({ refetchUser = true, throws = false } = {}) {
+  async initState({ refetchUser = false, throws = false } = {}) {
    const endpoints = [];
-    
+
    if (refetchUser) endpoints.push("/me");
 
-   
+
     const promises = endpoints.map(async endpoint => {
       const response = await http.get(this.endpoint + endpoint);
       return { endpoint, response };
     });
-    
+
 
     try {
       const responses = await Promise.all(promises);

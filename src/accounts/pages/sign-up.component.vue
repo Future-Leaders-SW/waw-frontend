@@ -351,7 +351,7 @@ const handleButtonClick = async () => {
           <input id="uploadCV" ref="fileInput" type="file" accept=".pdf" style="border: 1px solid #ccc; padding: 8px;"
             @change="uploadCV" class="rounded w-full !bg-transparent" />
         </span>
-        <span v-if="pdfUploaded.valueOf != null">
+        <span v-if="v$.pdfUploaded.$error && submitted">
           <small class="p-error">Debes subir un CV</small>
         </span>
         <p>
