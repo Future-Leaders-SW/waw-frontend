@@ -21,7 +21,7 @@ watchEffect(() => {
 const navigation = [
   { label: "Home", path: "/", icon: PrimeIcons.HOME },
   { label: "Offers", path: "/jobs/search", icon: PrimeIcons.BRIEFCASE },
-  { label: "Postulations", path: "/notifications", icon: PrimeIcons.SEND },
+  { label: "Postulations", path: "/my-postulations", icon: PrimeIcons.SEND },
 ];
 
 const search = ref("");
@@ -118,7 +118,7 @@ const accountMenu = [
             :key="item.path"
             :to="auth.store.user.email === 'admin@waw.com' && item.path === '/jobs/search' ? '/jobs/admin' : item.path">
             <li class="flex flex-col space-y-2">
-              <i :class="item.icon" class="text-xl"></i>
+              <i :class="auth.store.user.email === 'admin@waw.com' && item.path === '/my-postulations' ? '' : item.icon " class="text-xl"></i>
               <span class="text-xs font-medium uppercase">
                 {{ item.label }}
               </span>

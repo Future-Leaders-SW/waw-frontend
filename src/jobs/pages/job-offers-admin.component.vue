@@ -209,7 +209,7 @@ onMounted(() => fetchData());
       <template #header>
         <div
           class="flex flex-col md:flex-row md:justify-between md:items-center">
-          <h5 class="text-xl mb-2 md:mb-0 md:mr-2">Active offers</h5>
+          <h5 class="text-xl mb-2 md:mb-0 md:mr-2">Offer Dashboard</h5>
           <div>
             <span class="p-input-icon-left">
               <i :class="PrimeIcons.SEARCH"></i>
