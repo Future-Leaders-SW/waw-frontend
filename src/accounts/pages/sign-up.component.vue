@@ -347,23 +347,6 @@ const handleButtonClick = async () => {
         </span>
       </div>
 
-      <div class="w-full">
-        <span class="p-float-label w-full">
-          <InputText id="signup_pictureHref" v-model="v$.picture?.href.$model" type="text"
-            class="rounded w-full !bg-transparent" :class="{ 'p-invalid': v$.picture?.href.$invalid && submitted }"
-            aria-describedby="signup_pictureHref-error" />
-          <label for="signup_pictureHref" class="!bg-slate-100"
-            :class="{ 'p-error': v$.picture?.href.$invalid && submitted }">
-            Profile Image URL
-          </label>
-        </span>
-        <span v-if="v$.picture?.href.$error && submitted">
-          <span v-for="(error, index) of v$.picture?.href.$errors" id="signup_pictureHref-error" :key="index">
-            <small class="p-error">{{ error.$message }}</small>
-          </span>
-        </span>
-      </div>
-
       <div class="w-full" style="display: flex; flex-direction: column; align-items: center;">
         <label for="uploadCV" class="!bg-slate-100">
           Carga tu CV
