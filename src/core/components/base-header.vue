@@ -20,8 +20,8 @@ watchEffect(() => {
 
 const navigation = [
   { label: "Home", path: "/", icon: PrimeIcons.HOME },
-  { label: "Jobs", path: "/jobs", icon: PrimeIcons.BRIEFCASE },
-  { label: "Notices", path: "/notifications", icon: PrimeIcons.BELL },
+  { label: "Offers", path: "/jobs/search", icon: PrimeIcons.BRIEFCASE },
+  { label: "Postulations", path: "/my-postulations", icon: PrimeIcons.SEND },
 ];
 
 const search = ref("");
@@ -83,9 +83,9 @@ const accountMenu = [
     visible: () => auth.loggedIn,
   },
   {
-    label: "Suscription",
+    label: "Plans",
     command: () => {
-      router.push("/payment");
+      router.push("/plans");
     },
     icon: PrimeIcons.STAR,
     visible: () => auth.loggedIn,
@@ -116,27 +116,18 @@ const accountMenu = [
           <RouterLink
             v-for="item in navigation"
             :key="item.path"
-            :to="item.path">
+            :to="auth.store.user.email === 'admin@waw.com' && item.path === '/jobs/search' ? '/jobs/admin' : item.path">
             <li class="flex flex-col space-y-2">
-              <i :class="item.icon" class="text-xl"></i>
+              <i :class="auth.store.user.email === 'admin@waw.com' && item.path === '/my-postulations' ? '' : item.icon " class="text-xl"></i>
               <span class="text-xs font-medium uppercase">
-                {{ item.label }}
+                {{ auth.store.user.email === 'admin@waw.com' && item.path === '/my-postulations' ? '' : item.label }}
               </span>
             </li>
           </RouterLink>
         </ul>
       </nav>
     </div>
-    <div
-    v-if="auth.loggedIn"
-      class="h-full w-full hidden sm:flex items-center border-x border-slate-200"
-      @click="handleSearch">
-      <i :class="PrimeIcons.SEARCH" class="ml-4 text-xl text-slate-400"></i>
-      <input
-        v-model="search"
-        class="px-4 py-3 h-full w-full bg-transparent placeholder:font-light placeholder:text-base placeholder:text-slate-400"
-        :placeholder="mq.lgPlus ? 'Quick search...' : 'Search...'" />
-    </div>
+
     <div
       class="flex items-center shrink-0 space-x-4 cursor-pointer"
       @click="event => menuRef.toggle(event)">

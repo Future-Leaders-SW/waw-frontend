@@ -174,6 +174,13 @@
       "description": "You will support the engineering team and implement automation to fortify and expand our current technical processes. You will develop a strong technical understanding of the components of our system and work with internal resources to solve any challenges that may arise.",
       "salaryRange": "$135k-$157k",
       "published": false
+    },
+    {
+      "title": "Pract developer",
+      "description": "es solo para practica",
+      "salaryRange": "400-600",
+      "published": true,
+      "id": 7
     }
   ],
   "companies": [
@@ -206,6 +213,101 @@
       "name": "Oracle",
       "address": "Silicon Valley",
       "email": "oracle@support.com"
+    }
+  ],
+  "subscription": [
+    {
+      "id": 0,
+      "namePLan": 0,
+      "description": "Free",
+      "duration": 30,
+      "cost": 0,
+      "item": "Basic AI Job Offer recommendations",
+      "subscriptionType": 0
+    },
+    {
+      "id": 1,
+      "namePLan": 1,
+      "description": "Pro",
+      "duration": 30,
+      "cost": 25,
+      "item": "Personalized job offer recommendations based on your job preferences, experience and education background",
+      "subscriptionType": 1
+    },
+    {
+      "id": 2,
+      "namePLan": 2,
+      "description": "Master",
+      "duration": 30,
+      "cost": 40,
+      "item": "Team management, candidate tracking, and customizable job offer recommendations",
+      "subscriptionType": 2
+    }
+  ],
+  "billing": [
+    {
+      "subscriptionId": 1,
+      "userId": 2,
+      "startDate": "2023-06-22T23:08:34.828Z",
+      "endDate": "2023-06-22T23:08:34.828Z",
+      "payedAmount": 25,
+      "payedDate": "2023-06-22T23:08:34.828Z",
+      "id": 1
+    },
+    {
+      "subscriptionId": 2,
+      "userId": 2,
+      "startDate": "2023-06-22T23:08:34.828Z",
+      "endDate": "2023-06-22T23:08:34.828Z",
+      "payedAmount": 40,
+      "payedDate": "2023-06-22T23:08:34.828Z",
+      "id": 2
+    },
+    {
+      "subscriptionId": 1,
+      "userId": 2,
+      "startDate": "2023-06-22T23:08:34.828Z",
+      "endDate": "2023-06-22T23:08:34.828Z",
+      "payedAmount": 25,
+      "payedDate": "2023-06-22T23:08:34.828Z",
+      "id": 3
+    },
+    {
+      "subscriptionId": 2,
+      "userId": 3,
+      "startDate": "2023-06-22T23:08:34.828Z",
+      "endDate": "2023-06-22T23:08:34.828Z",
+      "payedAmount": 40,
+      "payedDate": "2023-06-22T23:08:34.828Z",
+      "id": 4
+    },
+    {
+      "subscriptionId": 1,
+      "userId": 5,
+      "startDate": "2023-06-22T23:08:34.828Z",
+      "endDate": "2023-06-22T23:08:34.828Z",
+      "payedAmount": 25,
+      "payedDate": "2023-06-22T23:08:34.828Z",
+      "id": 5
+    },
+    {
+      "subscriptionId": 2,
+      "userId": 7,
+      "startDate": "2023-06-22T23:08:34.828Z",
+      "endDate": "2023-06-22T23:08:34.828Z",
+      "payedAmount": 40,
+      "payedDate": "2023-06-22T23:08:34.828Z",
+      "id": 6
+    },
+    {
+      "subscriptionId": 2,
+      "userId": 2,
+      "startDate": "2023-06-22T23:08:34.828Z",
+      "endDate": "2023-06-22T23:08:34.828Z",
+      "payedAmount": 40,
+      "payedDate": "2023-06-22T23:08:34.828Z",
+
+      "id": 7
     }
   ]
 }

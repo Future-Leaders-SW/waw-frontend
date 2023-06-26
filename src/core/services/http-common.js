@@ -2,7 +2,8 @@ import axios from "axios";
 
 export const http = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: {
+ // baseURL: 'https://staging-dot-wawapi.uc.r.appspot.com/',
+headers: {
     "Content-type": "application/json",
   },
 });
@@ -20,5 +21,5 @@ http.interceptors.request.use(
 
     return config;
   },
-  error => Promise.reject(error)
+  error => Promise.reject(error),
 );

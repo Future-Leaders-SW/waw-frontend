@@ -35,6 +35,7 @@ const filters = ref({
     operator: FilterOperator.AND,
     constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
   },
+  description: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 
 /** @type {import("vue").Ref<any>} */
@@ -79,7 +80,8 @@ const submitItem = async item => {
   submitted.value = true;
 
   if (isBlank("title")) return;
-  if (isBlank("salaryRange")) return;
+  if (isBlank("minSalary")) return;
+  if (isBlank("maxSalary")) return;
 
   let res = null;
 
@@ -112,7 +114,9 @@ const submitItem = async item => {
     });
   }
 };
-
+const formatCurrency = (value) => {
+  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+};
 const cancelDelete = () => {
   deleteDialogVisible.value = false;
   pendingDeletion.value = null;
@@ -131,7 +135,7 @@ const deleteItems = async () => {
     await Promise.all(
       pendingDeletion.value.map(item => {
         return jobsService.delete(item.id);
-      })
+      }),
     );
     toastService.add({
       severity: ToastSeverity.SUCCESS,
@@ -150,6 +154,7 @@ const deleteItems = async () => {
   await fetchData();
   cancelDelete();
 };
+
 
 const exportCSV = () => datatable.value.exportCSV();
 
@@ -188,7 +193,7 @@ onMounted(() => fetchData());
       ref="datatable"
       v-model:selection="selection"
       v-model:filters="filters"
-      :global-filter-fields="['title']"
+      :global-filter-fields="['title','description']"
       filter-display="menu"
       :loading="loading"
       data-key="id"
@@ -204,7 +209,7 @@ onMounted(() => fetchData());
       <template #header>
         <div
           class="flex flex-col md:flex-row md:justify-between md:items-center">
-          <h5 class="text-xl mb-2 md:mb-0 md:mr-2">Active offers</h5>
+          <h5 class="text-xl mb-2 md:mb-0 md:mr-2">Offer Dashboard</h5>
           <div>
             <span class="p-input-icon-left">
               <i :class="PrimeIcons.SEARCH"></i>
@@ -227,7 +232,7 @@ onMounted(() => fetchData());
         header-class="w-12"
         :exportable="false" />
 
-      <Column field="title" header="Title" class="px-6 py-3 text-xs w-48">
+      <Column field="title" header="Title" class="px-6 py-3 text-s w-48">
         <template #filter="{ filterModel, filterCallback }">
           <InputText
             v-model="filterModel.value"
@@ -268,20 +273,23 @@ onMounted(() => fetchData());
         :sortable="false"
         class="px-6 py-3 text-xs w-64" />
 
-      <Column
-        ref="salaryRange"
-        field="salaryRange"
-        header="Salary Range"
-        :sortable="true"
-        class="px-6 py-3 text-xs w-64" />
+      <Column ref="salaryRange"
+              field="salaryRange"
+              header="Salary Range"
+              :sortable="true"
+              class="px-6 py-3 text-s w-64">
+        <template #body="{ data }">
+          {{ formatCurrency(data.minSalary) }} - {{ formatCurrency(data.maxSalary) }}
+        </template>
+      </Column>
 
       <Column
         field="published"
         header="Status"
         :sortable="true"
-        class="px-6 py-3 text-xs w-48">
+        class="px-6 py-3 text-s w-48">
         <template #body="{ data }">
-          <Tag v-if="data.published" severity="success">Published</Tag>
+          <Tag v-if="data.status" severity="success">Published</Tag>
           <Tag v-else severity="info">Unpublished</Tag>
         </template>
       </Column>
@@ -314,7 +322,7 @@ onMounted(() => fetchData());
 
     <Dialog
       v-model:visible="dialogVisible"
-      header="Create new offer"
+      header="Create New Offer"
       :modal="true"
       class="p-fluid mx-4 w-full sm:w-1/2">
       <div class="my-2">
@@ -352,22 +360,38 @@ onMounted(() => fetchData());
             <label for="dialog-description">Description</label>
           </span>
         </div>
-        <div class="mt-2">
+        <div class="mt-4">
+          <div class="div1">
           <span class="p-float-label">
             <InputText
-              id="dialog-salary-range"
-              v-model.trim="currentOffer.salaryRange"
+              id="dialog-minSalary"
+              v-model.trim="currentOffer.minSalary"
               type="text"
               required="true"
               class="rounded"
-              :class="{ 'p-invalid': isBlank('salaryRange') }" />
-            <label for="dialog-salary-range">Salary Range</label>
+              :class="{ 'p-invalid': isBlank('minSalary') }" />
+            <label for="dialog-salary-range">Min Salary</label>
           </span>
-          <small v-if="isBlank('salaryRange')" class="p-error">Required</small>
+            <small v-if="isBlank('Min Salary')" class="p-error">Required</small>
+          </div>
+          <div class="div2" >
+          <span class="p-float-label">
+            <InputText
+              id="dialog-maxSalary"
+              v-model.trim="currentOffer.maxSalary"
+              type="text"
+              required="true"
+              class="rounded"
+              :class="{ 'p-invalid': isBlank('maxSalary') }" />
+            <label for="dialog-salary-range">Max Salary</label>
+          </span>
+            <small v-if="isBlank('Max Salary')" class="p-error">Required</small>
+          </div>
         </div>
-        <div class="mt-4">
+
+        <div class="mt-2">
           <label class="mr-2" for="dialog-published">Published</label>
-          <InputSwitch id="dialog-published" v-model="currentOffer.published" />
+          <InputSwitch id="dialog-published" v-model="currentOffer.status" />
         </div>
       </div>
 
@@ -419,3 +443,12 @@ onMounted(() => fetchData());
     </Dialog>
   </div>
 </template>
+
+<style>
+
+.div1, .div2 {
+  display: inline-block;
+  width: 50%;
+  height: 100px;
+}
+</style>

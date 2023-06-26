@@ -55,6 +55,7 @@ export const routes = [
     path: "/jobs/search",
     name: "Job Search",
     component: () => import("@/jobs/pages/job-offers-display.component.vue"),
+    meta : {requiresAuth: true}
   },
   {
     path: "/companies/admin",

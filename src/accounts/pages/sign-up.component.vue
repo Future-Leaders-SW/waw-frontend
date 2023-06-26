@@ -4,13 +4,16 @@ import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
 import ToggleButton from "primevue/togglebutton";
 import useVuelidate from "@vuelidate/core";
+
 import Button from "primevue/button";
-import Dropdown from 'primevue/dropdown';
+import Dropdown from "primevue/dropdown";
 import { required, email, sameAs, helpers } from "@vuelidate/validators";
 import { PrimeIcons, ToastSeverity } from "primevue/api";
 import { reactive, computed, ref } from "vue";
 import { useRouter, RouterLink } from "vue-router";
 import { useToast } from "primevue/usetoast";
+import { http } from "@/core/services/http-common";
+import axios from "axios";
 
 
 import { useAuth } from "../services/auth.service";
@@ -22,8 +25,8 @@ const toastService = useToast();
 const submitted = ref(false);
 let visibleDialog = ref(false);
 let cvFile = ref(null);
+let cvpdf = ref(null);
 const pdfUploaded = ref(false);
-const selectedCity = ref(null);
 const state = reactive({
   fullName: "",
   preferredName: "",
@@ -32,20 +35,14 @@ const state = reactive({
   confirmPassword: "",
   birthdate: new Date(),
   checked: false,
-  rol: "",
 });
 
-const roles = ref([
-  { name: 'Employer', code: 'ER' },
-  { name: 'Employee', code: 'EE' },
-]);
 
 const rules = computed(() => ({
   fullName: { required },
   preferredName: { required },
   email: { required, email },
   password: { required },
-  selectedCity: { required },
   confirmPassword: { sameAs: sameAs(state.password, "password") },
   birthdate: {
     required,
@@ -55,16 +52,23 @@ const rules = computed(() => ({
         const birthdate = new Date(value);
         const timeNow = new Date();
         return timeNow.getFullYear() - birthdate.getFullYear() >= 18;
-      }
+      },
     ),
   },
   checked: {
     required,
     truthy: helpers.withMessage(
       "You must agree to the terms and conditions",
-      value => Boolean(value)
+      value => Boolean(value),
     ),
   },
+  pdfUploaded: {
+    truthy: helpers.withMessage(
+      "You must upload a CV",
+      () => pdfUploaded.value,
+    ),
+  },
+
 }));
 
 const v$ = useVuelidate(rules, state);
@@ -77,12 +81,125 @@ const handleRegister = async () => {
   if (!isValid) {
     return;
   }
-  visibleDialog.value = true;
+  //visibleDialog.value = true;
+  // Create a copy so that we can delete props later
+  const user = { ...state };
+  // We don't need the checked state on the server
+  delete user.confirmPassword;
+  delete user.checked;
+  console.log(user);
+  let respuestaCV = await sendCV();
+
+  if (respuestaCV > -1) {
+    user.cvId = respuestaCV;
+    const success = await auth.register(user);
+    if (success) {
+
+      router.push("/account/signin");
+      // Registation complete
+      toastService.add({
+        severity: ToastSeverity.SUCCESS,
+        summary: "Registration success",
+        detail: "Registered successfully. Please login to access your account.",
+      });
+      return;
+    }
+    toastService.add({
+      severity: ToastSeverity.ERROR,
+      summary: "Registration failed",
+      detail:
+        "An error occurred while trying to register. Please try again later.",
+    });
+
+  }
+
+
+  // Unable to complete registration
+  toastService.add({
+    severity: ToastSeverity.ERROR,
+    summary: "Registration failed",
+    detail:
+      "An error occurred while trying to register. Please try again later.",
+  });
+
+};
+
+const sendCV = async () => {
+  if (cvpdf.value) {
+    const formData = new FormData();
+    formData.append("file", cvpdf.value);
+
+    try {
+      const response = await fetch("https://pdf-ocr-6zcqyqd5qa-ue.a.run.app/uploadpdf/", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      let envio = await createCV(data);
+      return envio;
+
+    } catch (error) {
+      console.error("There was a problem with the fetch operation: " + error.message);
+      return -1;
+    }
+  } else {
+    console.log("No file to send");
+    return -1;
+  }
+};
+
+const createCV = async (cvResponse) => {
+  if (cvpdf.value) {
+    const formData = new FormData();
+    formData.append("data", cvpdf.value);
+    formData.append("title", cvResponse.filename);
+    formData.append("extract", cvResponse.content);
+
+    try {
+      const response = await axios.post("https://staging-dot-wawapi.uc.r.appspot.com/api/v1/cv", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response);
+      //const respuestaCV = await response.json()
+      if (response.status != 200) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = response.data;
+      console.log(data);
+      return data.id;
+    } catch (error) {
+      console.error(error);
+      return -1;
+    }
+  } else {
+    console.log("No file to send");
+    return -1;
+  }
+};
+
+const readFile = file => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 };
 
 const uploadCV = async (event) => {
   const file = event.target.files[0];
   if (file) {
+    cvFile.value = await readFile(file);
+    cvpdf.value = file;
     pdfUploaded.value = true;
   } else {
     pdfUploaded.value = false;
@@ -90,7 +207,6 @@ const uploadCV = async (event) => {
 };
 
 const handleButtonClick = async () => {
-  console.log('El botón Continuar fue presionado');
   // Create a copy so that we can delete props later
   const user = { ...state };
   // We don't need the checked state on the server
@@ -117,7 +233,6 @@ const handleButtonClick = async () => {
       "An error occurred while trying to register. Please try again later.",
   });
 };
-
 
 </script>
 
@@ -159,6 +274,9 @@ const handleButtonClick = async () => {
           </span>
         </span>
       </div>
+
+
+
 
       <div class="w-full">
         <span class="p-float-label w-full">
@@ -225,15 +343,25 @@ const handleButtonClick = async () => {
         </span>
       </div>
 
-      <div class="card flex justify-content-center">
-        <Dropdown v-model="v$.selectedCity.$model" :options="roles" optionLabel="name" placeholder="Select a rol"
-          class="w-full md:w-14rem" :class="{ 'p-invalid': v$.selectedCity.$invalid && submitted }" />
-        <span v-if="v$.selectedCity.$error && submitted">
-          <span v-for="(error, index) of v$.selectedCity.$errors" id="selectedCity-error" :key="index">
-            <small class="p-error">{{ error.$message }}</small>
-          </span>
+      <div class="w-full" style="display: flex; flex-direction: column; align-items: center;">
+        <label for="uploadCV" class="!bg-slate-100">
+          Carga tu CV
+        </label>
+        <span class="p-float-label w-full">
+          <input id="uploadCV" ref="fileInput" type="file" accept=".pdf" style="border: 1px solid #ccc; padding: 8px;"
+            @change="uploadCV" class="rounded w-full !bg-transparent" />
         </span>
+        <span v-if="v$.pdfUploaded.$error && submitted">
+          <small class="p-error">Debes subir un CV</small>
+        </span>
+        <p>
+          Sube tu CV para obtener ofertas personalizadas.
+        </p>
       </div>
+
+
+
+
 
       <div class="my-4">
         <ToggleButton v-model="v$.checked.$model" on-label="I agree with terms and conditions"
@@ -253,22 +381,6 @@ const handleButtonClick = async () => {
         </button>
       </div>
 
-      <Dialog v-model:visible="visibleDialog" modal header="Antes de continuar..." :style="{ width: '50vw' }"
-        :breakpoints="{ '960px': '75vw', '641px': '100vw' }">
-        <p style="margin-bottom: 20px;">
-          Por favor, sube tu CV para que nuestra IA pueda analizarlo y proporcionarte las mejores ofertas laborales acorde
-          a tu perfil.
-        </p>
-        <div style="display: flex; flex-direction: column; align-items: center;">
-          <input style="border: 1px solid #ccc; padding: 8px;" ref="fileInput" type="file" accept=".pdf"
-            @change="uploadCV" />
-
-          <div style="margin-top: 20px;"></div>
-          <button class="custom-button" :disabled="!pdfUploaded" @click="handleButtonClick">
-            Continuar
-          </button>
-        </div>
-      </Dialog>
 
       <div class="my-2">
         <span>Already on WAW? </span>
