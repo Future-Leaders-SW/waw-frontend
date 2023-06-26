@@ -3,7 +3,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 import { useJobs } from "../services/jobs.service";
-import { usePayment } from "@/payment/services/payment.service";
+import {useScoreoffers} from "@/jobs/services/scoreoffers.service.js"
 import { ref, onMounted } from "vue";
 import { FilterMatchMode, FilterOperator, PrimeIcons } from "primevue/api";
 import ConfirmDialog from "primevue/confirmdialog";
@@ -17,6 +17,7 @@ const auth = useAuth();
 const user = ref(auth.user)
 const userActivo = ref(auth.user.id)
 const service = useJobs();
+const serviceOffer = useScoreoffers();
 const jobs = ref([]);
 
 const confirm = useConfirm();
@@ -59,7 +60,7 @@ const formatCurrency = (value) => {
 };
 
 const optimizarJobs= async (item)=>{
-  const response = await service.findByUserId(item);
+  const response = await serviceOffer.findByUserId(item);
   jobs.value = response.data;
 }
 

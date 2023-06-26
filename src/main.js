@@ -26,5 +26,6 @@ app.provide(AuthServiceKey, new AuthService());
 app.provide(JobsServiceKey, new JobsService());
 app.provide(PayServiceKey,  new PaymentService());
 app.provide(BillingServiceKey,  new BillingService());
-app.provide(BillingServiceKey,  new BillingService());
+app.provide(scoreoffersServiceKey,  new scoreoffersService());
+
 app.mount("#app");
