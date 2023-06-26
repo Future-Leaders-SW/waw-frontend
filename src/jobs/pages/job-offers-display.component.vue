@@ -17,6 +17,8 @@ const jobs = ref([]);
 const confirm = useConfirm();
 const toast = useToast();
 
+
+
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   title: {
@@ -24,6 +26,14 @@ const filters = ref({
     constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
   },
   description: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  salaryRange: {
+    value: null,
+    filterFunction: (value, filter) => {
+      const [min, max] = filter.split('-');
+      const salary = parseFloat(value.replace(/[^0-9.-]+/g, ''));
+      return salary >= parseFloat(min) && salary <= parseFloat(max);
+    },
+  }
 });
 const handleConfirmation = () => {
   confirm.require({
@@ -128,12 +138,8 @@ onMounted(async () => {
       header="Salary Range"
       class="px-6 py-3 text-s w-64"
       :sortable="true"
-      :filter-match-mode="FilterMatchMode.RANGE"
-      :filter-function="(value, filter) => {
-        const [min, max] = filter.split('-');
-        const salary = value.replace(/[^0-9.-]+/g,'');
-        return parseFloat(salary) >= parseFloat(min) && parseFloat(salary) <= parseFloat(max);
-      }"
+      :filter-match-mode="FilterMatchMode.BETWEEN"
+      :filter-function="filters.salaryRange.filterFunction"
     >
       <template #body="{ data }">
         <div class="text-sm">
