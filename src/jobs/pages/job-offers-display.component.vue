@@ -15,7 +15,7 @@ import { useAuth } from "@/accounts/services/auth.service.js";
 
 const auth = useAuth();
 const user = ref(auth.user)
-
+const userActivo = ref(auth.user.id)
 const service = useJobs();
 const jobs = ref([]);
 
@@ -97,7 +97,7 @@ onMounted(async () => {
               placeholder="Search..." />
           </span>
           <button
-            @click="optimizarJobs(user)"
+            @click="optimizarJobs(userActivo)"
             class="ml-auto border-2 border-teal-300 p-2 rounded-md bg-teal-300 text-black ">
             🤖 Optimizar con IA
 
